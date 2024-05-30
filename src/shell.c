@@ -30,6 +30,12 @@
 ** This file contains code to implement the "sqlite" command line
 ** utility for accessing SQLite databases.
 */
+#if defined(PICO_SDK)
+#include <pico/stdlib.h>
+
+#define fgets(str, size, stream)  _fgets(str, size, stream)
+#endif
+
 #if (defined(_WIN32) || defined(WIN32)) && !defined(_CRT_SECURE_NO_WARNINGS)
 /* This needs to come before any includes for MSVC compiler */
 #define _CRT_SECURE_NO_WARNINGS
@@ -30337,6 +30343,8 @@ int SQLITE_CDECL wmain(int argc, wchar_t **wargv){
   char **argvToFree = 0;
   int argcToFree = 0;
 #endif
+  stdio_init_all();
+
   setvbuf(stderr, 0, _IONBF, 0); /* Make sure stderr is unbuffered */
 
 #ifdef SQLITE_SHELL_FIDDLE
@@ -30417,7 +30425,7 @@ int SQLITE_CDECL wmain(int argc, wchar_t **wargv){
 #endif
 
   assert( argc>=1 && argv && argv[0] );
-  Argv0 = argv[0];
+  Argv0 = "pico";
 
 #ifdef SQLITE_SHELL_DBNAME_PROC
   {
