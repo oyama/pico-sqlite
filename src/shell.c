@@ -7267,6 +7267,7 @@ SQLITE_EXTENSION_INIT1
 #include <time.h>
 #include <errno.h>
 
+#define lstat(path, buf) stat(path, buf)
 
 /*
 ** Structure of the fsdir() table-valued function
@@ -13885,7 +13886,7 @@ sqlite3expert *sqlite3_expert_new(sqlite3 *db, char **pzErrmsg){
 
   /* Register the auth callback with dbv */
   if( rc==SQLITE_OK ){
-    sqlite3_set_authorizer(pNew->dbv, idxAuthCallback, (void*)pNew);
+    ; //sqlite3_set_authorizer(pNew->dbv, idxAuthCallback, (void*)pNew);
   }
 
   /* If an error has occurred, free the new object and reutrn NULL. Otherwise,
@@ -23572,7 +23573,7 @@ static void open_db(ShellState *p, int openFlags){
   }
   if( p->db!=0 ){
     if( p->bSafeModePersist ){
-      sqlite3_set_authorizer(p->db, safeModeAuth, p);
+      ;
     }
     sqlite3_db_config(
         p->db, SQLITE_DBCONFIG_STMT_SCANSTATUS, p->scanstatsOn, (int*)0
@@ -26137,11 +26138,11 @@ static int do_meta_command(char *zLine, ShellState *p){
     }
     open_db(p, 0);
     if( booleanValue(azArg[1]) ){
-      sqlite3_set_authorizer(p->db, shellAuth, p);
+      ; //sqlite3_set_authorizer(p->db, shellAuth, p);
     }else if( p->bSafeModePersist ){
-      sqlite3_set_authorizer(p->db, safeModeAuth, p);
+      ;
     }else{
-      sqlite3_set_authorizer(p->db, 0, 0);
+      ; //sqlite3_set_authorizer(p->db, 0, 0);
     }
   }else
 #endif
