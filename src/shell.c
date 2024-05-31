@@ -1252,7 +1252,7 @@ SQLITE_INTERNAL_LINKAGE char* fGetsUtf8(char *cBuf, int ncMax, FILE *pfIn){
 #ifndef SQLITE_SHELL_FIDDLE
 
 /* From here onward, fgets() is redirected to the console_io library. */
-# define fgets(b,n,f) fGetsUtf8(b,n,f)
+//# define fgets(b,n,f) fGetsUtf8(b,n,f)
 /*
  * Define macros for emitting output text in various ways:
  *  sputz(s, z)      => emit 0-terminated string z to given stream s
@@ -30015,11 +30015,15 @@ static char *find_home_dir(int clearFlag){
 #if !defined(_WIN32) && !defined(WIN32) && !defined(_WIN32_WCE) \
      && !defined(__RTP__) && !defined(_WRS_KERNEL) && !defined(SQLITE_WASI)
   {
+/*
     struct passwd *pwent;
     uid_t uid = getuid();
     if( (pwent=getpwuid(uid)) != NULL) {
       home_dir = pwent->pw_dir;
     }
+*/
+    home_dir = "/";
+
   }
 #endif
 

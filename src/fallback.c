@@ -27,7 +27,7 @@ int chmod(const char *path, mode_t mode) {
 }
 
 int symlink(const char *path1, const char *path2) {
-    return -1;
+    return 0;
 }
 
 int chdir(const char *path) {
@@ -39,7 +39,7 @@ int fsync(int fildes) {
 }
 
 int getrusage(int who, struct rusage *r_usage) {
-    return -1;
+    return 0;
 }
 
 char *getcwd(char *buf, size_t size) {
@@ -50,6 +50,12 @@ char *getcwd(char *buf, size_t size) {
     return buf;
 }
 
+uid_t getuid(void) { return 1; }
+
+int fchmod(int fildes, mode_t mode) { return 0; }
+int fchown(int fildes, uid_t owner, gid_t group) { return 0; }
+uid_t geteuid(void) { return 1; }
+
 char *_fgets(char * restrict str, int size, FILE * restrict stream) {
     for (size_t i = 0; i < size; i++) {
         uint8_t ch = getchar_timeout_us(1000);
@@ -58,7 +64,12 @@ char *_fgets(char * restrict str, int size, FILE * restrict stream) {
             continue;
         }
         putchar(ch);
-        str[i] = ch;
+        if (ch == 0x08) {
+            i--;
+            str[i] = '\0';
+        } else {
+           str[i] = ch;
+        }
         if (ch == '\r') {
             str[i + 1] = '\n';
             str[i + 2] = '\0';
