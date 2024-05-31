@@ -26,4 +26,4 @@ While operational, this SQLite implementation on the Pico has limitations due to
 
 ## Licence
 
-All code and documentation in this SQLite repository are dedicated to the public domain by the authors.
+All code and documentation in this pico-sqlite repository are dedicated to the public domain by the authors.
