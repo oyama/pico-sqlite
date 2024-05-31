@@ -19,6 +19,7 @@ target_include_directories(sqlite PRIVATE src)
 target_link_libraries(sqlite PRIVATE pico_stdlib)
 target_link_options(sqlite PRIVATE -Wl,--print-memory-usage)
 target_compile_options(sqlite PRIVATE
+  -Os
   -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-char-subscripts
   -Wno-unused-but-set-variable -Wno-missing-field-initializers
   -Wno-unused-variable -Wno-unused-value
@@ -34,12 +35,12 @@ target_compile_options(sqlite PRIVATE
 #  -DSQLITE_OMIT_DEPRECATED
 #  -DSQLITE_OMIT_PROGRESS_CALLBACK
   -DSQLITE_ENABLE_LOCKING_STYLE=0
-#  -DSQLITE_DISABLE_DIRSYNC=1
+  -DSQLITE_DISABLE_DIRSYNC=1
 #  -DSQLITE_DISABLE_FTS3_UNICODE=1
 #  -DSQLITE_OMIT_ANALYZE
-#  -DSQLITE_OMIT_AUTHORIZATION
+  -DSQLITE_OMIT_AUTHORIZATION
 #  -DSQLITE_OMIT_BUILTIN_TEST
-  -DSQLITE_OMIT_DATETIME_FUNCS
+#  -DSQLITE_OMIT_DATETIME_FUNCS
 #  -DSQLITE_OMIT_DEPRECATED
   -DSQLITE_OMIT_LOAD_EXTENSION
   -DSQLITE_OMIT_LOCALTIME
