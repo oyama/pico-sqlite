@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
 
 # SQLite3 shell
-add_executable(sqlite3 src/shell.c)
+add_executable(sqlite3 EXCLUDE_FROM_ALL src/shell.c)
 target_include_directories(sqlite3 PRIVATE src)
 target_compile_options(sqlite3 PRIVATE
   -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-char-subscripts

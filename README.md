@@ -15,9 +15,38 @@ git submodule update --init --recursive
 
 mkdir build; cd build;
 PICO_SDK_PATH=/path/to/pico-sdk cmake ..
-make
+make sqlite3
 ```
 After successful compilation, the `sqlite3.uf2` binary will be produced. Simply drag and drop this file onto your Raspberry Pi Pico while in BOOTSEL mode to install.
+
+## Use as a library
+
+Add pico-sqlite to your project directory, with CMakeLists.txt as follows:
+```CMakeLists.txt
+cmake_minimum_required(VERSION 3.13...3.27)
+
+include(pico-sqlite/vendor/pico_sdk_import.cmake)
+add_subdirectory(pico-sqlite)
+
+set(FAMILY rp2040)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+project(hello_sqlite C CXX ASM)
+pico_sdk_init()
+
+
+add_executable(main main.c)
+target_compile_options(main PRIVATE)
+target_link_libraries(main PRIVATE
+  pico_stdlib
+  libsqlite3
+)
+pico_enable_stdio_usb(main 1)
+pico_add_extra_outputs(main)
+pico_enable_filesystem(main SIZE 1048576 AUTO_INIT TRUE)
+```
+
+`add_subdirectory(pico-sqlite)` and `libsqlite3` to `target_link_libraries` and `pico_enable_filesystem` For more information on `pico_enable_filesystem` See the [pico-vfs](https://github.com/oyama/pico-vfs) project.
 
 ## Limitations
 
