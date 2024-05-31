@@ -39,10 +39,6 @@ unsigned int sleep(unsigned int seconds) {
     return 0;
 }
 
-int utimes(const char *path, const struct timeval times[2]) {
-    return -1;
-}
-
 int chmod(const char *path, mode_t mode) {
     return 0;
 }

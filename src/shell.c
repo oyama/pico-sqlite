@@ -7629,6 +7629,7 @@ static int writeFile(
     ** Do not use utimes() on a symbolic link - it sees through the link and
     ** modifies the timestamps on the target. Or fails if the target does 
     ** not exist.  */
+/*
     if( 0==S_ISLNK(mode) ){
       struct timeval times[2];
       times[0].tv_usec = times[1].tv_usec = 0;
@@ -7638,6 +7639,7 @@ static int writeFile(
         return 1;
       }
     }
+*/
 #endif
   }
 
