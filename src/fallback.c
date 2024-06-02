@@ -9,7 +9,6 @@
 #include "fallback.h"
 
 int flock(int fd, int operation) {
-printf("flock\n");
     return 0;
 }
 
@@ -73,26 +72,93 @@ int fchmod(int fildes, mode_t mode) { return 0; }
 int fchown(int fildes, uid_t owner, gid_t group) { return 0; }
 uid_t geteuid(void) { return 1; }
 
+/*
+ * Deviates from the original function of fgets to support cursor movement
+ */
 char *_fgets(char * restrict str, int size, FILE * restrict stream) {
-    for (size_t i = 0; (int)i < size; i++) {
+    char escape[4] = {0};
+    size_t i = 0;
+    memset(str, 0, size);
+    while (i < (size_t)size) {
         uint8_t ch = getchar_timeout_us(1000);
         if (ch == 0xFF) {
-            i--;
             continue;
         }
-        putchar(ch);
-        if (ch == 0x08) {
-            i--;
-            str[i] = '\0';
-        } else {
-           str[i] = ch;
+        // manage escape sequence
+        if (ch == 0x1B) {
+            escape[0] = ch;
+            continue;
+        } else if (escape[0] == 0x1B && ch == 0x5B) {
+            escape[1] = ch;
+            continue;
+        } else if (escape[0] == 0x1B && escape[1] == 0x5B) {
+            escape[2] = ch;
+            if (ch == 0x44 && i > 0) {
+                i--;
+                printf(escape);
+            } else if (ch == 0x43) {
+                if (i < strlen(str)) {
+                    i++;
+                    printf(escape);
+                }
+            }
+            escape[0] = '\0';
+            continue;
         }
-        if (ch == '\r') {
+        escape[0] = '\0';
+
+        if (ch == '\b' || ch == 127) {  // backspace or delete key
+            if (i == 0)
+                continue;
+
+            printf("\b \b");
+            i--;
+            for (size_t j = i; j < strlen(str); j++) {
+                str[j] = str[j + 1];
+                putchar(str[j]);
+            }
+            putchar(' ');
+            for (size_t j = i; j < strlen(str) + 1; j++)
+                putchar('\b');
+            str[strlen(str)] = '\0';
+            continue;
+        } else if (ch == ' ') {  // space key
+            for (size_t j = strlen(str) + 1; i <= j; j--) {
+                str[j + 1] = str[j];
+                if (j == 0)
+                    break;
+            }
+            str[i] = ch;
+            putchar(' ');
+            for (size_t j = i + 1; j < strlen(str); j++)
+                putchar(str[j]);
+            for (size_t j = i; j < strlen(str) - 1; j++)
+                putchar('\b');
+            i++;
+            continue;
+        } else if (ch == '\r') {
+            i = strlen(str);
             putchar('\n');
-            str[i + 1] = '\n';
-            str[i + 2] = '\0';
+            str[i] = '\n';
+            str[++i] = '\0';
             return str;
         }
+
+        if (strlen(str) > i) {
+            for (size_t j = strlen(str); i <= j; j--) {
+                str[j + 1] = str[j];
+                if (j == 0)
+                    break;
+            }
+            for (size_t j = i; j < strlen(str); j++)
+                putchar(str[j]);
+            for (size_t j = i; j < strlen(str); j++)
+                putchar('\b');
+        }
+
+        putchar(ch);
+        str[i] = ch;
+        i += 1;
     }
     str[size] = '\0';
     return str;

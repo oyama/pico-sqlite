@@ -14,6 +14,7 @@ pico_sdk_init()
 add_executable(sqlite3 EXCLUDE_FROM_ALL src/shell.c)
 target_include_directories(sqlite3 PRIVATE src)
 target_compile_options(sqlite3 PRIVATE
+  -Os
   -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-char-subscripts
   -Wno-unused-but-set-variable -Wno-missing-field-initializers
   -Wno-unused-variable -Wno-unused-value
