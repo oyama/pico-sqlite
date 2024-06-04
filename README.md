@@ -18,6 +18,7 @@ PICO_SDK_PATH=/path/to/pico-sdk cmake ..
 make sqlite3
 ```
 After successful compilation, the `sqlite3.uf2` binary will be produced. Simply drag and drop this file onto your Raspberry Pi Pico while in BOOTSEL mode to install.
+The firmware `sqlite3.uf2` runs as a serial device connected via USB. You can connect to the SQLite3 shell with a serial terminal such as `minicom`, `screen` or `PuTTY`.
 
 ## Use as a library
 
