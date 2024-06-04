@@ -38,6 +38,8 @@ target_link_libraries(sqlite3 PRIVATE
   pico_stdlib
   libsqlite3
 )
+target_link_options(sqlite3 PRIVATE -Wl,--print-memory-usage)
+
 pico_enable_stdio_usb(sqlite3 1)
 pico_enable_filesystem(sqlite3 SIZE 1048576 AUTO_INIT TRUE)
 pico_add_extra_outputs(sqlite3)
@@ -57,6 +59,8 @@ target_compile_options(libsqlite3 INTERFACE
   -Wno-unused-variable -Wno-unused-value
   -DPICO_SDK=1
   -DHAVE_NANOSLEEP=0
+  -DSQLITE_MAX_MEMORY=131072
+  -DSQLITE_TEMP_STORE=0
   -DSQLITE_DEFAULT_MMAP_SIZE=0
   -DSQLITE_DEFAULT_WORKER_THREADS=0
   -DSQLITE_DISABLE_DIRSYNC=1
