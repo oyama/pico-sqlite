@@ -32,6 +32,7 @@
 */
 #if defined(PICO_SDK)
 #include <pico/stdlib.h>
+#include <hardware/watchdog.h>
 
 #define fgets(str, size, stream)  _fgets(str, size, stream)
 #endif
@@ -29940,7 +29941,9 @@ static int process_input(ShellState *p){
       CONTINUE_PROMPT_RESET;
       echo_group_input(p, zLine);
       if( zLine[0]=='.' ){
+        gpio_put(PICO_DEFAULT_LED_PIN, 1);
         rc = do_meta_command(zLine, p);
+        gpio_put(PICO_DEFAULT_LED_PIN, 0);
         if( rc==2 ){ /* exit requested */
           break;
         }else if( rc ){
@@ -29972,7 +29975,9 @@ static int process_input(ShellState *p){
     }
     if( nSql && QSS_SEMITERM(qss) && sqlite3_complete(zSql) ){
       echo_group_input(p, zSql);
+      gpio_put(PICO_DEFAULT_LED_PIN, 1);
       errCnt += runOneSqlLine(p, zSql, p->in, startline);
+      gpio_put(PICO_DEFAULT_LED_PIN, 0);
       CONTINUE_PROMPT_RESET;
       nSql = 0;
       if( p->outCount ){
@@ -29992,7 +29997,10 @@ static int process_input(ShellState *p){
   if( nSql ){
     /* This may be incomplete. Let the SQL parser deal with that. */
     echo_group_input(p, zSql);
+
+    gpio_put(PICO_DEFAULT_LED_PIN, 1);
     errCnt += runOneSqlLine(p, zSql, p->in, startline);
+    gpio_put(PICO_DEFAULT_LED_PIN, 0);
     CONTINUE_PROMPT_RESET;
   }
   free(zSql);
@@ -30349,6 +30357,8 @@ int SQLITE_CDECL wmain(int argc, wchar_t **wargv){
   int argcToFree = 0;
 #endif
   stdio_init_all();
+  gpio_init(PICO_DEFAULT_LED_PIN);
+  gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
   setvbuf(stderr, 0, _IONBF, 0); /* Make sure stderr is unbuffered */
 
@@ -30970,6 +30980,9 @@ int SQLITE_CDECL wmain(int argc, wchar_t **wargv){
   }
 #endif
 #endif /* !SQLITE_SHELL_FIDDLE */
+
+  printf("Quit SQLite3 shell and restart Pico ...\n");
+  watchdog_reboot(0, 0, 1000);
   return rc;
 }
 
