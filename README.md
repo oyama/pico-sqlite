@@ -43,7 +43,7 @@ target_link_libraries(main PRIVATE
 )
 pico_enable_stdio_usb(main 1)
 pico_add_extra_outputs(main)
-pico_enable_filesystem(main SIZE 1048576 AUTO_INIT TRUE)
+pico_enable_filesystem(main AUTO_INIT TRUE)
 ```
 
 `add_subdirectory(pico-sqlite)` and `libsqlite3` to `target_link_libraries` and `pico_enable_filesystem` For more information on `pico_enable_filesystem` See the [pico-vfs](https://github.com/oyama/pico-vfs) project.
@@ -53,7 +53,7 @@ pico_enable_filesystem(main SIZE 1048576 AUTO_INIT TRUE)
 While operational, this SQLite implementation on the Pico has limitations due to the constrained environment, including:
 
 - Lots of limitations
-- SQLite3 is significantly larger compared to the Pico. The binary size is about 630KB when built with the compiler option `-Os`, and 1MB when built without any specification.
+- SQLite3 is significantly larger compared to the Pico. The binary size is about 610KB when built with the compiler option `-Os`, and 1MB when built without any specification.
 
 ## Licence
 
