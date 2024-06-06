@@ -1,8 +1,8 @@
 # SQLite for Raspberry Pi Pico
 
-This project enables the operation of [SQLite3](https://www.sqlite.org/) on a Raspberry Pi Pico. The database utilizes the onboard flash memory, interfaced through the [littlefs](https://github.com/littlefs-project/littlefs) file system, enabling data persistence and manipulation via a straightforward SQLite3 interface. Interaction with the database can be done interactively via UART or USB CDC.
+This project enables [SQLite3](https://www.sqlite.org/) operation on the Raspberry Pi Pico, primarily utilizing the onboard flash memory's [littlefs](https://github.com/littlefs-project/littlefs), while also supporting various storage media and filesystems such as SD card's FAT. This ensures data persistence and flexible operation across a broad range of environments. The project provides an interactive shell accessible via UART or USB CDC, and a C/C++ client library. For details on the supported storage media and filesystems, please refer to the [pico-vfs](https://github.com/oyama/pico-vfs) documentation.
 
-This project ports SQLite3 and an interactive shell to the pico-sdk environment. Fixes to the pico-sdk port can be found by diffing from the [git history](https://github.com/oyama/pico-sqlite/compare/8d49726..9ae8520). There are a few fallback and omitted functions. The rest is due to miscellaneous comment-outs.
+Fixes to the pico-sdk port can be found by diffing from the [git history](https://github.com/oyama/pico-sqlite/compare/8d49726..9ae8520). There are a few fallback and omitted functions. The rest is due to miscellaneous comment-outs.
 
 ## Build and Install
 
