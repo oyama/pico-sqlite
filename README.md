@@ -54,6 +54,7 @@ pico_enable_filesystem(main AUTO_INIT TRUE)
 While operational, this SQLite implementation on the Pico has limitations due to the constrained environment, including:
 
 - Lots of limitations
+- Auto-commit mode is slow. Explicit `BEGIN` and `COMMIT` multiple `INSERT` together is very fast.
 - SQLite3 is significantly larger compared to the Pico. The binary size is about 610KB when built with the compiler option `-Os`, and 1MB when built without any specification.
 
 ## Licence
