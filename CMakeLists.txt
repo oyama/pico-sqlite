@@ -4,7 +4,6 @@ include(vendor/pico_sdk_import.cmake)
 add_subdirectory(vendor/pico-vfs)
 
 project(sqlite3 C CXX ASM)
-set(FAMILY rp2040)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
