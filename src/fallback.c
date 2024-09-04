@@ -8,6 +8,11 @@
 #include <pico/stdlib.h>
 #include "fallback.h"
 
+
+int access(const char *path, int mode) {
+    return 0;
+}
+
 int flock(int fd, int operation) {
     return 0;
 }
