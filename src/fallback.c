@@ -81,7 +81,7 @@ char *_fgets(char * restrict str, int size, FILE * restrict stream) {
     memset(str, 0, size);
     while (i < (size_t)size) {
         uint8_t ch = getchar_timeout_us(1000);
-        if (ch == 0xFF) {
+        if (ch == 0xFF || ch ==0xFE) {
             continue;
         }
         // manage escape sequence
