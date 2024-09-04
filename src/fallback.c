@@ -80,8 +80,8 @@ char *_fgets(char * restrict str, int size, FILE * restrict stream) {
     size_t i = 0;
     memset(str, 0, size);
     while (i < (size_t)size) {
-        uint8_t ch = getchar_timeout_us(1000);
-        if (ch == 0xFF || ch ==0xFE) {
+        int ch = getchar_timeout_us(1000);
+        if (ch == PICO_ERROR_TIMEOUT) {
             continue;
         }
         // manage escape sequence
